@@ -62,11 +62,11 @@ Function Prepare-Section {
     .PARAMETER Name
     The description of the section.
     .PARAMETER Run
-    Whether the section will be run.
+    True if the section will run, False for a dry run.
     .PARAMETER Log
-    A message to log run.
+    A message for the console
     .NOTES
-    Returns the $Run parameter. Use in an If expression to run the commands of the section or not.
+    Returns the $Run parameter. Use in an If expression to run the commands of the section or not. See examples below
 
     $SectionPreffix will be set to the preffix to add to output files. If it is a directory, it will be created.
     #>
@@ -193,6 +193,9 @@ If ( Prepare-Section -Index "05" -Name "Startup applications" ) {
     Get-CimInstance win32_service -Filter "startmode = 'auto'" | Export-Clixml ${SectionPreffix}StartupServices.xml
     # Applications run when the system starts
     Get-CimInstance Win32_StartupCommand | Export-Clixml ${SectionPreffix}StartupCommands.xml
+    # Alternate commands
+    # SC QUERY state= all >StartupServices.txt
+    # HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services
 }
 
 If ( Prepare-Section -Index "06" -Name "Running process related information" ) {
